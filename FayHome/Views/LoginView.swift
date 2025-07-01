@@ -81,8 +81,8 @@ struct LoginView: View {
                     .padding()
                     .font(.manrope(.smallBodyBold))
                     .fayPrimaryButton()
-                    .disabled(viewModel.password.isEmpty && viewModel.email.isEmpty)
-                    .opacity(viewModel.password.isEmpty && viewModel.email.isEmpty ? 0.5 : 1)
+                    .disabled(viewModel.password.isEmpty || viewModel.email.isEmpty)
+                    .opacity(viewModel.password.isEmpty || viewModel.email.isEmpty ? 0.5 : 1)
             }
         }
         .padding()
