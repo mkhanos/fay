@@ -16,6 +16,7 @@ protocol Route {
     var method: HTTPMethod { get }
     var headers: [String: String] { get }
     var queryItems: [URLQueryItem]? { get }
+    var body: Data? { get }
 }
 
 extension Route {
@@ -29,13 +30,13 @@ extension Route {
     
     var headers: [String: String] { [:] }
     var queryItems: [URLQueryItem]? { nil }
-    var body: Data? { nil }
     
     func buildRequest() throws -> URLRequest {
         var components = URLComponents()
         components.scheme = scheme
         components.host = baseURL
         components.path = path
+        components.queryItems = queryItems
         
         guard let url = components.url else {
             throw NetworkError.badURL
@@ -43,7 +44,12 @@ extension Route {
         
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
+        request.httpBody = body
         
+        for (key, value) in headers {
+            request.addValue(value, forHTTPHeaderField: key)
+        }
+
         return request
     }
 }
@@ -54,7 +60,7 @@ struct Signin: Route {
         let password: String
     }
     
-    typealias Response = String
+    typealias Response = AuthResponse
     
     var path: String { "/signin" }
     
@@ -72,6 +78,8 @@ struct Signin: Route {
 }
 
 struct GetAppointments: Route {
+    var body: Data? { nil }
+    
     typealias Response = [Appointment]
     
     var path: String { "/appointments" }
