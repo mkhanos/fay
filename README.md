@@ -1,3 +1,5 @@
+# Video Demo
+https://www.loom.com/share/e6731edf22204a52a443fbab8b318711
 # Implementation Notes/Decisions Made
 * Mimicked the design system for fonts and colors from figma to allow for developers to EASILY implement new view components with convenience modifiers that would be relative to system defined font sizes
 * Explicitly throwing errors and making the caller handle them at the view model level. I did not get to implement robust alerts in 6 hours
