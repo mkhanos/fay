@@ -54,35 +54,46 @@ extension Route {
     }
 }
 
-struct Signin: Route {
-    struct LoginRequest: Encodable {
-        let username: String
-        let password: String
+enum FayRoutes {
+    struct Signin: Route {
+        struct LoginRequest: Encodable {
+            let username: String
+            let password: String
+        }
+        
+        typealias Response = AuthResponse
+        
+        var path: String { "/signin" }
+        
+        var method: HTTPMethod { .post }
+        
+        var headers: [String: String] {
+            ["Content-Type": "application/json"]
+        }
+        
+        let loginRequest: LoginRequest
+        
+        var body: Data? {
+            try? JSONEncoder().encode(loginRequest)
+        }
     }
-    
-    typealias Response = AuthResponse
-    
-    var path: String { "/signin" }
-    
-    var method: HTTPMethod { .post }
-    
-    var headers: [String: String] {
-        ["Content-Type": "application/json"]
-    }
-    
-    let loginRequest: LoginRequest
-    
-    var body: Data? {
-        try? JSONEncoder().encode(loginRequest)
+
+    struct GetAppointments: Route {
+        let token: String
+        
+        var body: Data? { nil }
+        
+        typealias Response = [Appointment]
+        
+        var path: String { "/appointments" }
+        
+        var method: HTTPMethod { .get }
+        
+        var headers: [String : String] {
+            [
+                "Authorization": "Bearer \(token)"
+            ]
+        }
     }
 }
 
-struct GetAppointments: Route {
-    var body: Data? { nil }
-    
-    typealias Response = [Appointment]
-    
-    var path: String { "/appointments" }
-    
-    var method: HTTPMethod { .get }
-}
