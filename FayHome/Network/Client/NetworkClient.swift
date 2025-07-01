@@ -12,6 +12,7 @@ protocol NetworkClientProtocol {
 }
 
 final class NetworkClient: NetworkClientProtocol {
+    static let shared = NetworkClient()
     private var session: URLSession
     
     init(session: URLSession = .shared) {

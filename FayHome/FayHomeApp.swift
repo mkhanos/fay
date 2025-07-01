@@ -9,18 +9,9 @@ import SwiftUI
 
 @main
 struct FayHomeApp: App {
-    let networkClient: NetworkClient
-    let authenticationService: AuthenticationService
-    
-    init() {
-        self.networkClient = NetworkClient()
-        self.authenticationService = AuthenticationService(networkClient: networkClient)
-    }
-
     var body: some Scene {
         WindowGroup {
             EntryView()
         }
-        .environmentObject(authenticationService)
     }
 }
