@@ -33,17 +33,29 @@
 		FA5DC7062E1396C6009D4E34 /* Exceptions for "FayHome" folder in "FayHome" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				appointments.json,
 				Info.plist,
 			);
 			target = FA5DC5EB2E133650009D4E34 /* FayHome */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		FA5DC7172E13A394009D4E34 /* Exceptions for "FayHome" folder in "Compile Sources" phase from "FayHome" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = FA5DC5E82E133650009D4E34 /* Sources */;
+			membershipExceptions = (
+				appointments.json,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		FA5DC5EE2E133650009D4E34 /* FayHome */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				FA5DC7062E1396C6009D4E34 /* Exceptions for "FayHome" folder in "FayHome" target */,
+				FA5DC7172E13A394009D4E34 /* Exceptions for "FayHome" folder in "Compile Sources" phase from "FayHome" target */,
 			);
 			path = FayHome;
 			sourceTree = "<group>";
