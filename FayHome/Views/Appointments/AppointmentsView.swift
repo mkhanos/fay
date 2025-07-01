@@ -76,7 +76,7 @@ extension AppointmentsView {
 }
 
 extension String {
-    func extractHour(includeMinutes: Bool = false) -> String {
+    func extractHour(includeMinutes: Bool = false, includeTimeZone: Bool = false) -> String {
         let isoFormatter = ISO8601DateFormatter()
         guard let date = isoFormatter.date(from: self) else { return "N/A" }
         

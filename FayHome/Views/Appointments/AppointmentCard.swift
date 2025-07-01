@@ -38,7 +38,7 @@ struct AppointmentCard: View {
                 
                 
                 VStack(alignment: .leading) {
-                    Text(isNext ?  "\(appt.start.extractHour(includeMinutes: true)) - \(appt.end.extractHour(includeMinutes: true)) " : "\(appt.start.extractHour())")
+                    Text(isNext ?  "\(appt.start.extractHour(includeMinutes: true)) - \(appt.end.extractHour(includeMinutes: true)) (\(TimeZone.current.abbreviation() ?? ""))" : "\(appt.start.extractHour())")
                         .font(.manrope(.smallBodyBold))
                         .foregroundColor(.textBase)
                     Text("\(appt.appointment_type.rawValue)")
