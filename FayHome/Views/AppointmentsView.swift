@@ -8,53 +8,108 @@
 import Combine
 import SwiftUI
 
+enum AppointmentDate: String, CaseIterable {
+    case upcoming = "Upcoming"
+    case past = "Past"
+}
+
 struct AppointmentsView: View {
     @StateObject var viewModel = ViewModel()
+    @State var selectedAppointments: AppointmentDate = .upcoming
     var body: some View {
-        ScrollView(.vertical) {
-            LazyVStack(alignment: .center, spacing: 16) {
-                if let nextAppt = viewModel.nextAppt {
-                    AppointmentCard(appt: nextAppt, isNext: true)
+        VStack(spacing: 0) { // appointments container
+            VStack(spacing: 0) { // top divider toolbar stack
+                HStack {
+                    Text("Appointments")
+                        .font(.manrope(.title))
+                        .foregroundColor(.textBase)
+                    Spacer()
+                    HStack {
+                        Image("NewIcon")
+                        Text("New")
+                            .font(.manrope(.smallBodyBold))
+                            .foregroundColor(.textBase)
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+                    .roundedBorder(cornerRadius: 8, fill: .white, stroke: .stroke)
                 }
-                ForEach(viewModel.upcomingAppts, id: \.appointment_id) { appt in
-                    AppointmentCard(appt: appt)
-                }
+                .padding(.horizontal, 24)
+                AppointmentPicker(selectedAppointments: $selectedAppointments)
             }
-            .scrollTargetLayout()
+            
+            AppointmentsList(selectedAppointments: $selectedAppointments, viewModel: viewModel)
         }
-        .contentMargins(.horizontal, 24)
-        .scrollTargetBehavior(.viewAligned)
-        .scrollIndicators(.hidden)
         .onAppear {
             Task {
                 await viewModel.getAppointments()
             }
         }
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Text("Appointments")
-                    .font(.manrope(.title))
-                    .foregroundColor(.textBase)
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                HStack {
-                    Image("NewIcon")
-                    Text("New")
+    }
+}
+
+struct AppointmentPicker: View {
+    @Binding var selectedAppointments: AppointmentDate
+    
+    var body: some View {
+        HStack(spacing: 0) {
+            ForEach(AppointmentDate.allCases, id: \.self) { date in
+                VStack(spacing: 0) {
+                    Spacer()
+                    Text(date.rawValue)
+                        .frame(maxWidth: .infinity)
+                        .foregroundColor(selectedAppointments == date ? .fayPrimary : .textSubtitle)
                         .font(.manrope(.smallBodyBold))
-                        .foregroundColor(.textBase)
+                    Spacer()
+                    Rectangle()
+                        .fill(selectedAppointments == date ? .fayPrimary : .textSubtitle)
+                        .frame(height: 1)
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
-                .roundedBorder(cornerRadius: 8, fill: .white, stroke: .stroke)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    withAnimation {
+                        selectedAppointments = date
+                    }
+                }
             }
-            
         }
-        
+        .frame(maxHeight: 45)
+    }
+ 
+}
+
+struct AppointmentsList: View {
+    @Binding var selectedAppointments: AppointmentDate
+    @ObservedObject var viewModel: AppointmentsView.ViewModel
+    
+    var body: some View {
+        ScrollView(.vertical) { // appointment list
+            LazyVStack(alignment: .center, spacing: 16) {
+                if selectedAppointments == .upcoming {
+                    if let nextAppt = viewModel.nextAppt {
+                        AppointmentCard(appt: nextAppt,appointmentDate: .upcoming, isNext: true)
+                    }
+                    ForEach(viewModel.upcomingAppts, id: \.appointment_id) { appt in
+                        AppointmentCard(appt: appt, appointmentDate: .upcoming)
+                    }
+                } else {
+                    ForEach(viewModel.pastAppts, id: \.appointment_id) { appt in
+                        AppointmentCard(appt: appt, appointmentDate: .past)
+                    }
+                }
+                
+            }
+            .scrollTargetLayout()
+        }
+        .contentMargins(24)
+        .scrollTargetBehavior(.viewAligned)
+        .scrollIndicators(.hidden)
     }
 }
 
 struct AppointmentCard: View {
     let appt: Appointment
+    var appointmentDate: AppointmentDate
     var isNext: Bool = false
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -66,8 +121,8 @@ struct AppointmentCard: View {
                             .font(.manrope(.semibold, size: 14))
                             .frame(maxWidth: .infinity)
                             .padding(.horizontal, 8)
-                            .foregroundColor(.fayPrimary)
-                            .background(Color.calendarHeader)
+                            .foregroundColor(appointmentDate == .upcoming ? .fayPrimary : .textBase)
+                            .background(appointmentDate == .upcoming ? Color.calendarUpcomingHeader : Color.calendarPastHeader)
                             .padding(.vertical, 1)
                         Text("\(appt.start.extractDate())")
                             .font(.manrope(.semibold, size: 20))
@@ -195,7 +250,14 @@ extension String {
                                       end: "2025-01-27T18:30:00Z",
                                       duration_in_minutes: 45,
                                       recurrence_type: .weekly),
+                    appointmentDate: .upcoming,
                     isNext: true)
     .padding()
     .background(Color.gray)
 }
+
+#Preview {
+    @Previewable @State var selectedAppointments: AppointmentDate = .upcoming
+    AppointmentPicker(selectedAppointments: $selectedAppointments)
+}
+
