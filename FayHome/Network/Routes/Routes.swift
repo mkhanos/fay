@@ -83,7 +83,7 @@ enum FayRoutes {
         
         var body: Data? { nil }
         
-        typealias Response = [Appointment]
+        typealias Response = AppointmentResponse
         
         var path: String { "/appointments" }
         
