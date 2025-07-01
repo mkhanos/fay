@@ -8,7 +8,7 @@
 import Foundation
 
 protocol NetworkClientProtocol {
-    func sendRequest<T: Decodable>(endpoint: any Route) async throws -> T
+    func sendRequest<T: Decodable>(route: any Route) async throws -> T
 }
 
 final class NetworkClient: NetworkClientProtocol {
@@ -18,9 +18,9 @@ final class NetworkClient: NetworkClientProtocol {
         self.session = session
     }
     
-    public func sendRequest<T: Decodable>(endpoint: any Route) async throws -> T {
+    public func sendRequest<T: Decodable>(route: any Route) async throws -> T {
         do {
-            let request = try endpoint.buildRequest() // handle network error.badurl
+            let request = try route.buildRequest() // handle network error.badurl
             let (data, response) = try await session.data(for: request) // check response code here and throw if not 2-300
             try handleResponse(response: response)
             let decodedObject = try JSONDecoder().decode(T.self, from: data) // throw on decoding
