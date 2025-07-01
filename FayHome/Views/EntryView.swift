@@ -8,12 +8,30 @@
 import SwiftUI
 
 struct EntryView: View {
-    @ObservedObject var authService = AuthenticationService.shared
+    @ObservedObject private var authService = AuthenticationService.shared
+    @State private var selection: TabValue = .appointments
     var body: some View {
         if authService.isAuthenticated {
-            AppointmentsView()
+            TabView(selection: $selection) {
+                Tab("Appointments", image: selection == .appointments ? "Calendar" : "Calendar-1", value: TabValue.appointments) {
+                    AppointmentsView()
+                }
+                Tab("Chat", image: "Chats", value: TabValue.chat) {
+                    
+                }
+                Tab("Journal", image: "Notebook text", value: TabValue.journal) {
+                }
+                Tab("Profile", image: "User", value: TabValue.profile) {
+
+                }
+            }
+            .tint(.fayPrimary)
         } else {
             LoginView(viewModel: .init())
         }
     }
+}
+
+enum TabValue: String {
+    case appointments, chat, journal, profile
 }
