@@ -6,27 +6,21 @@
 //
 
 import SwiftUI
-import SwiftData
 
 @main
 struct FayHomeApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+    let networkClient: NetworkClient
+    let authenticationService: AuthenticationService
+    
+    init() {
+        self.networkClient = NetworkClient()
+        self.authenticationService = AuthenticationService(networkClient: networkClient)
+    }
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            EntryView()
         }
-        .modelContainer(sharedModelContainer)
+        .environmentObject(authenticationService)
     }
 }
