@@ -13,8 +13,8 @@ struct Appointment: Decodable {
     var patient_id: String
     var status: AppointmentStatus
     var appointment_type: AppointmentType
-    var start: Date
-    var end: Date
+    var start: String
+    var end: String
     var duration_in_minutes: Int
     var recurrence_type: RecurrenceType
 }
