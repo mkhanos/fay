@@ -34,8 +34,9 @@ struct LoginView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Email address")
                     .font(.manrope(.smallBodyBold))
-                TextField("Enter email address", text: $viewModel.email)
+                TextField("", text: $viewModel.email, prompt: Text("Enter email address").foregroundColor(.textSubtitle).font(.manrope(.captionMedium)))
                     .textContentType(.emailAddress)
+                    .autocapitalization(.none)
                     .keyboardType(.emailAddress)
                     .padding(8)
                     .fayLoginStroke()
@@ -51,15 +52,14 @@ struct LoginView: View {
                 }
                 HStack {
                     if viewModel.isPasswordVisible {
-                        TextField("Enter password", text: $viewModel.password)
+                        TextField("", text: $viewModel.password, prompt: Text("Enter password ").foregroundColor(.textSubtitle).font(.manrope(.captionMedium)))
                     } else {
-                        SecureField("Enter password", text: $viewModel.password)
+                        SecureField("", text: $viewModel.password, prompt: Text("Enter password ").foregroundColor(.textSubtitle).font(.manrope(.captionMedium)))
                     }
                     Button(action: {
                         viewModel.isPasswordVisible.toggle()
                     }) {
                         Image(systemName: viewModel.isPasswordVisible ? "eye.slash" : "eye")
-                            .foregroundColor(.gray)
                     }
                 }
                 .padding(8)
@@ -83,6 +83,7 @@ struct LoginView: View {
             }
         }
         .padding()
+        .foregroundColor(.textBase)
     }
 }
 
