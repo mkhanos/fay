@@ -41,7 +41,7 @@ struct AppointmentCard: View {
                     Text(isNext ?  "\(appt.start.extractHour(includeMinutes: true)) - \(appt.end.extractHour(includeMinutes: true)) (\(TimeZone.current.abbreviation() ?? ""))" : "\(appt.start.extractHour())")
                         .font(.manrope(.smallBodyBold))
                         .foregroundColor(.textBase)
-                    Text("\(appt.appointment_type.rawValue)")
+                    Text(isNext ? "\(appt.appointment_type.rawValue) with Jane Williams, RD" : "\(appt.appointment_type.rawValue)")
                         .font(.manrope(.captionMedium))
                         .foregroundColor(.textSubtitle)
                 }
