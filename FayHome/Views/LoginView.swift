@@ -70,8 +70,7 @@ struct LoginView: View {
             
             Spacer()
             
-            // grey out or make uninteractable with no password entered
-            Button(role: nil, action: {
+            Button(action: {
                 Task {
                     await AuthenticationService.shared.signin(username: viewModel.email, password: viewModel.password)
                 }
@@ -82,15 +81,14 @@ struct LoginView: View {
                     .padding()
                     .font(.manrope(.smallBodyBold))
                     .fayPrimaryButton()
+                    .disabled(viewModel.password.isEmpty && viewModel.email.isEmpty)
+                    .opacity(viewModel.password.isEmpty && viewModel.email.isEmpty ? 0.5 : 1)
             }
         }
         .padding()
         .foregroundColor(.textBase)
     }
 }
-
-
-
 
 extension LoginView {
     class ViewModel: ObservableObject {
