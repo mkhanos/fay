@@ -17,11 +17,9 @@ struct RoundedBorderModifier: ViewModifier {
             .background(
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .fill(fill)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: cornerRadius)
-                            .stroke(stroke)
-                    )
+                    .stroke(stroke)
             )
+            
     }
 }
 
@@ -31,11 +29,11 @@ extension View {
     }
     
     func fayLoginStroke() -> some View {
-        self.roundedBorder(cornerRadius: 8, fill: .clear, stroke: .stroke)
+        self.roundedBorder(cornerRadius: 8, fill: .white, stroke: .stroke)
     }
     
     func fayAppointmentStroke() -> some View {
-        self.roundedBorder(cornerRadius: 16, fill: .clear, stroke: .stroke)
+        self.roundedBorder(cornerRadius: 16, fill: .white, stroke: .stroke)
     }
     
     func fayPrimaryButton() -> some View {
