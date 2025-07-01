@@ -53,8 +53,10 @@ struct LoginView: View {
                 HStack {
                     if viewModel.isPasswordVisible {
                         TextField("", text: $viewModel.password, prompt: Text("Enter password ").foregroundColor(.textSubtitle).font(.manrope(.captionMedium)))
+                            .autocapitalization(.none)
                     } else {
                         SecureField("", text: $viewModel.password, prompt: Text("Enter password ").foregroundColor(.textSubtitle).font(.manrope(.captionMedium)))
+                            .autocapitalization(.none)
                     }
                     Button(action: {
                         viewModel.isPasswordVisible.toggle()
